@@ -4,8 +4,6 @@ import MapView from 'react-native-maps';
 
 const UserMenu = ({ navigation }) => {
   const handleConfirmPickup = () => {
-    // Handle the confirm pickup action here
-    // For example, navigate to another screen or show a confirmation message
     Alert.alert("Pickup Confirmed", "Your pickup has been confirmed. A driver will be with you shortly.");
   };
 
