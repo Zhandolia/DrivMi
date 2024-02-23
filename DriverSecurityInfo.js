@@ -35,7 +35,7 @@ const DriverSecurityInfo = ({ navigation }) => {
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry={true} // Ensures the text is obscured
+        secureTextEntry={true}
         style={styles.input}
       />
       <Button title="Submit Registration" onPress={handleSubmit} />
