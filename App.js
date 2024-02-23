@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MenuPage from './MenuPage';
 import UserPersonalInfo from './UserPersonalInfo';
@@ -10,6 +10,7 @@ import DriverPersonalInfo from './DriverPersonalInfo';
 import DriverLicenseInfo from './DriverLicenseInfo';
 import DriverAdditionalInfo from './DriverAdditionalInfo';
 import DriverSecurityInfo from './DriverSecurityInfo';
+import UserMenu from './UserMenu';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ function App() {
         <Stack.Screen name="DriverLicenseInfo" component={DriverLicenseInfo} options={{ title: 'Driver License Info' }} />
         <Stack.Screen name="DriverAdditionalInfo" component={DriverAdditionalInfo} options={{ title: 'Driver Additional Info' }} />
         <Stack.Screen name="DriverSecurityInfo" component={DriverSecurityInfo} options={{ title: 'Driver Security Info' }} />
+        <Stack.Screen name="UserMenu" component={UserMenu} options={{title: 'User Menu'}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

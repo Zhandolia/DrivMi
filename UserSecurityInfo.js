@@ -1,44 +1,72 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert, Switch, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Button, StyleSheet, Dimensions, PermissionsAndroid, Platform, Alert } from 'react-native';
+import MapView, { Marker, Circle } from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
 
-const UserSecurityInfo = ({ navigation }) => {
-  const [legalAcknowledgment, setLegalAcknowledgment] = useState(false);
-  const [userID, setUserID] = useState('');
-  const [password, setPassword] = useState('');
+const UserMenu = ({ navigation }) => {
+  const [region, setRegion] = useState({
+    latitude: 42.3601, // Default to Boston
+    longitude: -71.0589, // Default to Boston
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
 
-  const handleSubmit = () => {
-    if (!legalAcknowledgment) {
-      Alert.alert("Error", "You must accept the legal terms to proceed.");
-      return;
+  const requestLocationPermission = async () => {
+    if (Platform.OS === 'ios') {
+      Geolocation.requestAuthorization('whenInUse');
+      locateCurrentPosition();
+    } else {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: "Location Access Required",
+            message: "This app needs to access your location",
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          locateCurrentPosition();
+        } else {
+          Alert.alert("Location Permission Denied");
+        }
+      } catch (err) {
+        console.warn(err);
+      }
     }
-    // Additional validation can be added here
-    Alert.alert("Registration Complete", `ID: ${userID}\nYour account has been created.`);
-    // Navigate to the next part of the app or back to the login screen
-    // navigation.navigate('LoginScreen');
   };
+
+  const locateCurrentPosition = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const { latitude, longitude } = position.coords;
+        setRegion({
+          ...region,
+          latitude,
+          longitude,
+        });
+      },
+      error => Alert.alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  };
+
+  useEffect(() => {
+    requestLocationPermission();
+  }, []);
 
   return (
     <View style={styles.container}>
-      <Switch
-        value={legalAcknowledgment}
-        onValueChange={setLegalAcknowledgment}
-        style={styles.switch}
-      />
-      <Text> I agree to the Terms and Conditions.</Text>
-      <TextInput
-        placeholder="ID"
-        value={userID}
-        onChangeText={setUserID}
-        style={styles.input}
-      />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry={true} // Ensures the text is obscured
-        style={styles.input}
-      />
-      <Button title="Submit Registration" onPress={handleSubmit} />
+      <MapView
+        style={styles.map}
+        region={region}
+        showsUserLocation={true}
+        followsUserLocation={true}
+      >
+        {/* Circle for the pickup spot */}
+        <View style={styles.pickupIndicator} />
+      </MapView>
+      <Button title="Confirm Pickup" onPress={() => Alert.alert("Pickup Confirmed", `Location: ${region.latitude}, ${region.longitude}`)} />
+      <View style={styles.pickupIndicator} />
     </View>
   );
 };
@@ -47,19 +75,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20,
+    alignItems: 'center',
   },
-  switch: {
-    alignSelf: 'center',
-    marginBottom: 20,
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    padding: 10,
-    marginBottom: 10,
+  pickupIndicator: {
+    position: 'absolute',
+    height: 10,
+    width: 10,
+    backgroundColor: 'red',
     borderRadius: 5,
+    top: '50%',
+    left: '50%',
+    marginTop: -5, // half of the height
+    marginLeft: -5, // half of the width
   },
 });
 
-export default UserSecurityInfo;
+export default UserMenu;
