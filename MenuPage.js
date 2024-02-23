@@ -6,11 +6,11 @@ function MenuPage({ navigation }) {
     <View style={styles.container}>
       <Button
         title="User Section"
-        onPress={() => navigation.navigate('UserPersonalInfo')} // Navigate to UserPersonalInfo
+        onPress={() => navigation.navigate('UserPersonalInfo')}
       />
       <Button
         title="Driver Section"
-        // onPress={() => navigation.navigate('DriverRegistration')} // Placeholder for Driver section
+        onPress={() => navigation.navigate('DriverPersonalInfo')}
       />
     </View>
   );

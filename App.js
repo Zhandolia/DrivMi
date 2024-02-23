@@ -6,6 +6,10 @@ import UserPersonalInfo from './UserPersonalInfo';
 import UserCarInfo from './UserCarInfo';
 import UserAdditionalInfo from './UserAdditionalInfo';
 import UserSecurityInfo from './UserSecurityInfo';
+import DriverPersonalInfo from './DriverPersonalInfo';
+import DriverLicenseInfo from './DriverLicenseInfo';
+import DriverAdditionalInfo from './DriverAdditionalInfo';
+import DriverSecurityInfo from './DriverSecurityInfo';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +21,11 @@ function App() {
         <Stack.Screen name="UserPersonalInfo" component={UserPersonalInfo} options={{ title: 'User Personal Information' }} />
         <Stack.Screen name="UserCarInfo" component={UserCarInfo} options={{ title: 'User Car Information' }} />
         <Stack.Screen name="UserAdditionalInfo" component={UserAdditionalInfo} options={{ title: 'User Additional Information' }} />
-        <Stack.Screen name="UserSecurityInfo" component={UserSecurityInfo} options={{ title: 'Security Info' }} />
+        <Stack.Screen name="UserSecurityInfo" component={UserSecurityInfo} options={{ title: 'User Security Info' }} />
+        <Stack.Screen name="DriverPersonalInfo" component={DriverPersonalInfo} options={{ title: 'Driver Personal Info' }} />
+        <Stack.Screen name="DriverLicenseInfo" component={DriverLicenseInfo} options={{ title: 'Driver License Info' }} />
+        <Stack.Screen name="DriverAdditionalInfo" component={DriverAdditionalInfo} options={{ title: 'Driver Additional Info' }} />
+        <Stack.Screen name="DriverSecurityInfo" component={DriverSecurityInfo} options={{ title: 'Driver Security Info' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
